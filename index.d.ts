@@ -3,7 +3,7 @@ import { Realm } from 'prismarine-realms'
 import { ServerDeviceCodeResponse } from 'prismarine-auth'
 
 declare module 'bedrock-protocol' {
-  type Version = '1.19.80' | '1.19.70' | '1.19.63' | '1.19.62' | '1.19.60' | '1.19.51' | '1.19.50' | '1.19.41' | '1.19.40' | '1.19.31' | '1.19.30' | '1.19.22' | '1.19.21' | '1.19.20' | '1.19.11' | '1.19.10' | '1.19.2' | '1.19.1' | '1.18.31' | '1.18.30' | '1.18.12' | '1.18.11' | '1.18.10' | '1.18.2' | '1.18.1' | '1.18.0' | '1.17.41' | '1.17.40' | '1.17.34' | '1.17.30' | '1.17.11' | '1.17.10' | '1.17.0' | '1.16.220' | '1.16.210' | '1.16.201'
+  type Version = '1.20.10' | '1.20.0' | '1.19.80' | '1.19.70' | '1.19.63' | '1.19.62' | '1.19.60' | '1.19.51' | '1.19.50' | '1.19.41' | '1.19.40' | '1.19.31' | '1.19.30' | '1.19.22' | '1.19.21' | '1.19.20' | '1.19.11' | '1.19.10' | '1.19.2' | '1.19.1' | '1.18.31' | '1.18.30' | '1.18.12' | '1.18.11' | '1.18.10' | '1.18.2' | '1.18.1' | '1.18.0' | '1.17.41' | '1.17.40' | '1.17.34' | '1.17.30' | '1.17.11' | '1.17.10' | '1.17.0' | '1.16.220' | '1.16.210' | '1.16.201'
 
   export interface Options {
     // The string version to start the client or server as
@@ -162,8 +162,8 @@ declare module 'bedrock-protocol' {
 
     constructor(options: Options)
 
-    listen(host?: string, port?: number): void
-    close(disconnectReason?: string): void
+    listen(host?: string, port?: number): Promise<void>
+    close(disconnectReason?: string): Promise<void>
 
     on(event: 'connect', cb: (client: Player) => void): any
   }
@@ -187,7 +187,10 @@ declare module 'bedrock-protocol' {
     enableChunkCaching?: boolean
 
     // Only allow one client to connect at a time (default: false)
-    forceSinge?: boolean
+    forceSingle?: boolean
+
+    // Do not disconnect clients on server packet parsing errors and drop the packet instead (default: false)
+    omitParseErrors?: boolean
 
     // Dispatched when a new client has logged in, and we need authentication
     // tokens to join the backend server. Cached after the first login.
